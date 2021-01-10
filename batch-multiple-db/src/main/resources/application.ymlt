@@ -1,0 +1,37 @@
+server:
+  port: 8090
+
+#spring:
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password: password
+#    database-platform: org.hibernate.dialect.H2Dialect
+
+spring:
+  application:
+    name: spring-reddit-clone
+  employee:
+    datasource:
+      driverClassName: org.mariadb.jdbc.Driver
+      url: jdbc:mariadb://localhost:3306/emp_batch_db?createDatabaseIfNotExist=true
+      username: root
+      password:
+  user:
+    datasource:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3333/user_batch_db?createDatabaseIfNotExist=true
+      username: root
+      password: root
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  batch:
+    initialize-schema: ALWAYS
+#    job:
+#      enabled: false
