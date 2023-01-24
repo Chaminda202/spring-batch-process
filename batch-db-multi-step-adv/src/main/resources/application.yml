@@ -1,0 +1,32 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: spring-batch-adv
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/batch_db?createDatabaseIfNotExist=true
+    username: admin
+    password: admin
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  batch:
+    initialize-schema: ALWAYS
+    job:
+      enabled: false
+
+imported:
+  input:
+    file_path: /Users/chamindasampath/interviews_exercise/input/test.csv
+
+generated:
+  output:
+    file_path: /Users/chamindasampath/interviews_exercise/output/test.csv

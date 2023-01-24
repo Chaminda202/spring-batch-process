@@ -1,0 +1,17 @@
+name,age,occupation,basic,allowance,tax
+Tom,24,Software Engineer,5000.0,200.0,50.0
+Sam,26,Quality Assurance,5000.0,30.0,10.0
+Sera,28,Business Analysis,6500.0,23.0,12.0
+Smith,32,Architecture,15000.0,23.0,45.0
+Tom1,24,Software Engineer,5000.0,34.0,34.0
+Sam1,26,Quality Assurance,5000.0,23.0,67.0
+Sera1,28,Business Analysis,6500.0,32.0,34.0
+Smith1,32,Architecture,15000.0,12.0,56.0
+Tom2,24,Software Engineer,5000.0,12.0,23.0
+Sam2,26,Quality Assurance,5000.0,32.0,43.0
+Sera2,28,Business Analysis,6500.0,67.0,97.0
+Smith2,32,Architecture,15000.0,87.0,45.0
+Tom3,24,Software Engineer,5000.0,34.0,45.0
+Sam3,26,Quality Assurance,5000.0,28.0,34.0
+Sera3,28,Business Analysis,6500.0,45.0,67.0
+Smith3,32,Architecture,15000.0,34.0,78.0
