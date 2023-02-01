@@ -11,8 +11,10 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.step.skip.SkipLimitExceededException;
 import org.springframework.batch.core.step.skip.SkipPolicy;
+import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -20,8 +22,10 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
@@ -46,9 +50,13 @@ public class EmployeeBatchConfig {
     private ValidateBatchJobTasklet validateBatchJobTasklet;
 
     @Bean
-    FlatFileItemReader<EmployeeDTO> fileItemReader() {
+    @StepScope
+    FlatFileItemReader<EmployeeDTO> fileItemReader(@Value("#{jobParameters['input.file.name']}") String fileName) {
         FlatFileItemReader<EmployeeDTO> flatFileItemReader = new FlatFileItemReader<>();
-        flatFileItemReader.setResource(new FileSystemResource(this.appConfig.getInputFilePath()));
+        // if file is defined inside the project
+        // flatFileItemReader.setResource(new ClassPathResource("data/test.csv"));
+        // flatFileItemReader.setResource(new FileSystemResource(this.appConfig.getInputFilePath()));
+        flatFileItemReader.setResource(new FileSystemResource(fileName));
         flatFileItemReader.setName("CSV-Reader");
         flatFileItemReader.setLinesToSkip(1);
         flatFileItemReader.setLineMapper(lineMapper());
@@ -64,9 +72,9 @@ public class EmployeeBatchConfig {
         lineTokenizer.setStrict(false);
         // Skip fields when reading a file
         // String[] properties = new String[] {"X","age","occupation","X","allowance","tax"};
-        // lineTokenizer.setIncludedFields(IntStream.range(0, properties.length).toArray());
 
         String[] properties = new String[]{"name","age","occupation","basic","allowance","tax"};
+        // lineTokenizer.setIncludedFields(new int[] {1, 2, 4, 5});
         lineTokenizer.setNames(properties);
         BeanWrapperFieldSetMapper<EmployeeDTO> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(EmployeeDTO.class);
@@ -77,9 +85,9 @@ public class EmployeeBatchConfig {
     }
 
     @Bean
-    public Step step1() {
+    public Step step1(ItemReader<EmployeeDTO> fileItemReader) {
         return stepBuilderFactory.get("csv-step").<EmployeeDTO, Employee>chunk(4)
-                .reader(fileItemReader())
+                .reader(fileItemReader)
                 .processor(processor)
                 .writer(employeeWriter)
                 //.taskExecutor(taskExecutor())
@@ -87,9 +95,9 @@ public class EmployeeBatchConfig {
     }
 
     @Bean(name = EMPLOYEE_JOB)
-    public Job runJob() {
+    public Job runJob(Step step1) {
         return jobBuilderFactory.get(EMPLOYEE_JOB)
-                .start(step1())
+                .start(step1)
                 .next(generateCsvFile())
                 //.listener(employeeJobExecutionListener())
                 .listener(new EmployeeJobExecutionListener())

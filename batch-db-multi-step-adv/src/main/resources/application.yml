@@ -25,8 +25,12 @@ spring:
 
 imported:
   input:
-    file_path: /Users/chamindasampath/interviews_exercise/input/test.csv
+    file_path: /Users/chamindasampath/interviews_exercise/input
 
 generated:
   output:
     file_path: /Users/chamindasampath/interviews_exercise/output/test.csv
+
+process:
+  file:
+    format: csv

@@ -10,7 +10,6 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import static com.spring.batch.constant.JobConstant.EMPLOYEE_JOB;
 import static com.spring.batch.constant.JobConstant.VALIDATE_EMPLOYEE_JOB;
@@ -21,14 +20,12 @@ public class BatchDbApplication {
 	public static void main(String[] args) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 		// ConfigurableApplicationContext ctx = SpringApplication.run(BatchDbApplication.class, args);
 		ApplicationContext ctx = SpringApplication.run(BatchDbApplication.class, args);
-		JobLauncher jobLauncher = (JobLauncher) ctx.getBean("jobLauncher");
-		Job job1= (Job) ctx.getBean(EMPLOYEE_JOB);
-		Job job2= (Job) ctx.getBean(VALIDATE_EMPLOYEE_JOB);
-		jobLauncher.run(job1,new JobParameters());
-		jobLauncher.run(job2,new JobParameters());
-
-
-
+//		JobLauncher jobLauncher = (JobLauncher) ctx.getBean("jobLauncher");
+//		JobParameters jobParameters = new JobParameters();
+//
+//		Job job1= (Job) ctx.getBean(EMPLOYEE_JOB);
+//		Job job2= (Job) ctx.getBean(VALIDATE_EMPLOYEE_JOB);
+//		jobLauncher.run(job1, jobParameters);
+//		jobLauncher.run(job2, jobParameters);
 	}
-
 }

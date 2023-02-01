@@ -11,4 +11,6 @@ public class AppConfig {
     private String inputFilePath;
     @Value("${generated.output.file_path}")
     private String outputFilePath;
+    @Value("${process.file.format}")
+    private String fileFormat;
 }
